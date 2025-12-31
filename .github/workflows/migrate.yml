@@ -1,0 +1,58 @@
+name: Run Database Migrations
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'backend/alembic/versions/**'
+      - 'backend/app/models/**'
+      - '.github/workflows/migrate.yml'
+  pull_request:
+    branches:
+      - main
+      - master
+    paths:
+      - 'backend/alembic/versions/**'
+      - 'backend/app/models/**'
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run migrations
+        env:
+          DATABASE_URL: ${{ secrets.SUPABASE_DATABASE_URL }}
+        run: |
+          cd backend
+          echo "Running database migrations..."
+          alembic upgrade head
+          echo "Migrations completed successfully!"
+      
+      - name: Verify migration
+        env:
+          DATABASE_URL: ${{ secrets.SUPABASE_DATABASE_URL }}
+        run: |
+          cd backend
+          echo "Current database version:"
+          alembic current
+          echo "Migration verification complete!"
+

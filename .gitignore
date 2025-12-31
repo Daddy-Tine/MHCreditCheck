@@ -68,6 +68,10 @@ htmlcov/
 .tox/
 .hypothesis/
 
+# Test scripts (may contain sensitive data)
+backend/test_connection.ps1
+backend/run_migrations.ps1
+
 # Docker
 docker-compose.override.yml
 

@@ -525,4 +525,3 @@ Core tables:
 ### Documentation Created
 
 - `docs/SUPABASE_SETUP.md` - Complete Supabase setup guide
-- `docs/RESEND_SETUP.md` - Complete Resend email setup guide
