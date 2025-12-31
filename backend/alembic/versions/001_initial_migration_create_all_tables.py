@@ -18,93 +18,104 @@ depends_on = None
 
 def upgrade() -> None:
     # Create ENUM types (only if they don't exist)
-    # Using a more robust check that works in all PostgreSQL versions
+    # Check and create each type individually to avoid conflicts
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'userrole') THEN
-                CREATE TYPE userrole AS ENUM ('ADMIN', 'BANK_MANAGER', 'BANK_USER', 'DATA_PROVIDER', 'AUDITOR', 'CONSUMER');
+                EXECUTE 'CREATE TYPE userrole AS ENUM (''ADMIN'', ''BANK_MANAGER'', ''BANK_USER'', ''DATA_PROVIDER'', ''AUDITOR'', ''CONSUMER'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'accounttype') THEN
-                CREATE TYPE accounttype AS ENUM ('CREDIT_CARD', 'MORTGAGE', 'AUTO_LOAN', 'PERSONAL_LOAN', 'STUDENT_LOAN', 'LINE_OF_CREDIT', 'OTHER');
+                EXECUTE 'CREATE TYPE accounttype AS ENUM (''CREDIT_CARD'', ''MORTGAGE'', ''AUTO_LOAN'', ''PERSONAL_LOAN'', ''STUDENT_LOAN'', ''LINE_OF_CREDIT'', ''OTHER'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'accountstatus') THEN
-                CREATE TYPE accountstatus AS ENUM ('OPEN', 'CLOSED', 'DELINQUENT', 'CHARGE_OFF', 'COLLECTION', 'BANKRUPTCY');
+                EXECUTE 'CREATE TYPE accountstatus AS ENUM (''OPEN'', ''CLOSED'', ''DELINQUENT'', ''CHARGE_OFF'', ''COLLECTION'', ''BANKRUPTCY'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'paymentstatus') THEN
-                CREATE TYPE paymentstatus AS ENUM ('CURRENT', 'LATE_30', 'LATE_60', 'LATE_90', 'LATE_120_PLUS', 'NO_PAYMENT');
+                EXECUTE 'CREATE TYPE paymentstatus AS ENUM (''CURRENT'', ''LATE_30'', ''LATE_60'', ''LATE_90'', ''LATE_120_PLUS'', ''NO_PAYMENT'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'inquirypurpose') THEN
-                CREATE TYPE inquirypurpose AS ENUM ('LOAN_APPLICATION', 'CREDIT_CARD_APPLICATION', 'EMPLOYMENT', 'RENTAL_APPLICATION', 'INSURANCE', 'ACCOUNT_REVIEW', 'OTHER');
+                EXECUTE 'CREATE TYPE inquirypurpose AS ENUM (''LOAN_APPLICATION'', ''CREDIT_CARD_APPLICATION'', ''EMPLOYMENT'', ''RENTAL_APPLICATION'', ''INSURANCE'', ''ACCOUNT_REVIEW'', ''OTHER'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'inquirystatus') THEN
-                CREATE TYPE inquirystatus AS ENUM ('PENDING', 'APPROVED', 'DENIED', 'CANCELLED');
+                EXECUTE 'CREATE TYPE inquirystatus AS ENUM (''PENDING'', ''APPROVED'', ''DENIED'', ''CANCELLED'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'disputestatus') THEN
-                CREATE TYPE disputestatus AS ENUM ('PENDING', 'UNDER_REVIEW', 'RESOLVED', 'REJECTED', 'WITHDRAWN');
+                EXECUTE 'CREATE TYPE disputestatus AS ENUM (''PENDING'', ''UNDER_REVIEW'', ''RESOLVED'', ''REJECTED'', ''WITHDRAWN'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'disputereason') THEN
-                CREATE TYPE disputereason AS ENUM ('INCORRECT_BALANCE', 'INCORRECT_PAYMENT_HISTORY', 'ACCOUNT_NOT_MINE', 'DUPLICATE_ACCOUNT', 'FRAUD', 'IDENTITY_THEFT', 'OTHER');
+                EXECUTE 'CREATE TYPE disputereason AS ENUM (''INCORRECT_BALANCE'', ''INCORRECT_PAYMENT_HISTORY'', ''ACCOUNT_NOT_MINE'', ''DUPLICATE_ACCOUNT'', ''FRAUD'', ''IDENTITY_THEFT'', ''OTHER'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'auditaction') THEN
-                CREATE TYPE auditaction AS ENUM ('CREATE', 'READ', 'UPDATE', 'DELETE', 'LOGIN', 'LOGOUT', 'LOGIN_FAILED', 'PERMISSION_DENIED', 'DATA_EXPORT', 'PASSWORD_CHANGE', 'ACCOUNT_LOCKED');
+                EXECUTE 'CREATE TYPE auditaction AS ENUM (''CREATE'', ''READ'', ''UPDATE'', ''DELETE'', ''LOGIN'', ''LOGOUT'', ''LOGIN_FAILED'', ''PERMISSION_DENIED'', ''DATA_EXPORT'', ''PASSWORD_CHANGE'', ''ACCOUNT_LOCKED'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'consenttype') THEN
-                CREATE TYPE consenttype AS ENUM ('CREDIT_REPORT', 'DATA_SHARING', 'MARKETING');
+                EXECUTE 'CREATE TYPE consenttype AS ENUM (''CREDIT_REPORT'', ''DATA_SHARING'', ''MARKETING'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
     op.execute("""
         DO $$
         BEGIN
             IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'consentstatus') THEN
-                CREATE TYPE consentstatus AS ENUM ('GRANTED', 'REVOKED', 'EXPIRED');
+                EXECUTE 'CREATE TYPE consentstatus AS ENUM (''GRANTED'', ''REVOKED'', ''EXPIRED'')';
             END IF;
+        EXCEPTION WHEN duplicate_object THEN NULL;
         END$$;
     """)
 
