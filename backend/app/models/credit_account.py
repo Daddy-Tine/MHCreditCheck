@@ -1,7 +1,7 @@
 """
 Credit Account model
 """
-from sqlalchemy import Column, Integer, String, DateTime, Date, Numeric, ForeignKey, Enum, Text
+from sqlalchemy import Column, Integer, String, DateTime, Date, Numeric, ForeignKey, Enum, Text, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum

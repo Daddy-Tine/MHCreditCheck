@@ -39,7 +39,7 @@ class AuditLog(Base):
     request_body = Column(JSON, nullable=True)  # Sanitized request data
     response_status = Column(Integer, nullable=True)
     error_message = Column(Text, nullable=True)
-    metadata = Column(JSON, nullable=True)  # Additional context
+    additional_metadata = Column(JSON, nullable=True)  # Additional context
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     
     # Relationships
