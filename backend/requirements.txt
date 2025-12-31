@@ -41,13 +41,13 @@ flake8==6.1.0
 mypy==1.7.1
 
 # API Documentation
-python-openapi==0.1.1
+# python-openapi - Not needed, FastAPI generates OpenAPI automatically
 
 # Rate limiting
 slowapi==0.1.9
 
 # CORS
-python-cors==1.0.0
+# python-cors - Not needed, FastAPI includes CORSMiddleware
 
 # Email Service
 resend==0.6.0
